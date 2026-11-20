@@ -49,11 +49,12 @@ window.APP_CONFIG = {
   // 1. Crie um projeto gratuito em https://console.firebase.google.com
   // 2. Ative o Cloud Firestore e copie o objeto firebaseConfig aqui embaixo.
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyBusqNU49ZKGp-ciCbPBZcuNcIKsxrGQh4",
+    authDomain: "sala-de-estudos-cc.firebaseapp.com",
+    projectId: "sala-de-estudos-cc",
+    storageBucket: "sala-de-estudos-cc.firebasestorage.app",
+    messagingSenderId: "541384563731",
+    appId: "1:541384563731:web:6aa3815b08eaf36bf6f3e6",
+    measurementId: "G-YL9ESJCNC8"
   }
 };
