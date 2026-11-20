@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sala de Estudos • Ciência da Computação</title>
+
+  <!-- Google Fonts para os 5 temas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@500;600;700&family=Cinzel:wght@600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Fredoka:wght@500;600;700&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@600;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- CABEÇALHO -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div id="brand-logo" class="brand-logo"></div>
+        <div>
+          <h1 id="brand-title">Sala de Estudos</h1>
+          <p id="brand-subtitle">Ciência da Computação • Ambiente Virtual</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <nav id="theme-switcher" class="theme-switcher" aria-label="Seletor de temas"></nav>
+        <button id="nickname-btn" type="button" class="nickname-btn" title="Alterar seu apelido">
+          <span>👤</span>
+          <span id="nickname-display">Definir apelido</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA DE FRASE + STATUS DE SINCRONIZAÇÃO -->
+  <div class="quote-bar">
+    <span id="theme-quote" class="quote-text"></span>
+    <span id="sync-status" class="sync-badge local"><span class="dot"></span> Modo Local</span>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="dashboard">
+    <!-- COLUNA ESQUERDA: FERRAMENTAS DE ESTUDO -->
+    <div class="study-column">
+      <!-- TIMER (POMODORO + CRONÔMETRO LIVRE) -->
+      <section class="card" aria-label="Temporizador de estudos">
+        <div class="card-header">
+          <h2>⏱️ Foco &amp; Tempo</h2>
+          <div class="timer-tabs" role="tablist">
+            <button type="button" class="timer-tab active" data-mode="pomodoro">Pomodoro</button>
+            <button type="button" class="timer-tab" data-mode="stopwatch">Cronômetro</button>
+          </div>
+        </div>
+
+        <!-- Painel Pomodoro -->
+        <div id="panel-pomodoro">
+          <div class="pomo-modes">
+            <button type="button" class="pomo-mode-btn active" data-pomo-mode="focus">Foco</button>
+            <button type="button" class="pomo-mode-btn" data-pomo-mode="short">Pausa Curta</button>
+            <button type="button" class="pomo-mode-btn" data-pomo-mode="long">Pausa Longa</button>
+          </div>
+
+          <div class="pomo-ring-wrapper">
+            <svg class="pomo-svg" viewBox="0 0 196 196">
+              <circle class="pomo-ring-bg" cx="98" cy="98" r="84"></circle>
+              <circle id="pomo-ring-progress" class="pomo-ring-progress" cx="98" cy="98" r="84"></circle>
+            </svg>
+            <div class="pomo-center">
+              <div id="pomo-display" class="timer-digits">25:00</div>
+              <div id="pomo-status-label" class="pomo-status">Tempo de Foco</div>
+            </div>
+          </div>
+
+          <div class="timer-actions">
+            <button id="pomo-start-btn" type="button" class="btn">Iniciar</button>
+            <button id="pomo-reset-btn" type="button" class="btn btn-secondary">Reiniciar</button>
+          </div>
+
+          <div class="pomo-footer">
+            <span>🍅 Concluídos hoje: <strong id="pomo-count">0</strong></span>
+            <form id="pomo-custom-form" class="pomo-custom-form">
+              <label>Foco <input id="cfg-focus" type="number" min="1" max="120" value="25" /></label>
+              <label>Curta <input id="cfg-short" type="number" min="1" max="60" value="5" /></label>
+              <label>Longa <input id="cfg-long" type="number" min="1" max="60" value="15" /></label>
+              <button type="submit" class="btn btn-ghost btn-sm">Aplicar</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Painel Cronômetro Livre -->
+        <div id="panel-stopwatch" class="hidden">
+          <div class="sw-box">
+            <div id="sw-display" class="sw-digits">00:00:00</div>
+            <div class="timer-actions">
+              <button id="sw-start-btn" type="button" class="btn">Iniciar</button>
+              <button id="sw-lap-btn" type="button" class="btn btn-secondary">Registrar Bloco</button>
+              <button id="sw-reset-btn" type="button" class="btn btn-ghost">Zerar</button>
+            </div>
+            <ul id="sw-laps" class="sw-laps"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SONS AMBIENTES -->
+      <section class="card" aria-label="Sons ambientes">
+        <div class="card-header">
+          <h2>🎵 Sons Ambientes</h2>
+          <button id="stop-all-sounds" type="button" class="btn btn-ghost btn-sm">Silenciar tudo</button>
+        </div>
+        <div id="sound-grid" class="sound-grid"></div>
+      </section>
+
+      <!-- TAREFAS E FLASHCARDS LADO A LADO -->
+      <div class="two-col-row">
+        <!-- LISTA DE TAREFAS -->
+        <section class="card" aria-label="Lista de tarefas">
+          <div class="card-header">
+            <h2>✅ Tarefas</h2>
+            <button id="todo-clear-done" type="button" class="btn btn-ghost btn-sm">Limpar feitas</button>
+          </div>
+
+          <form id="todo-form" class="todo-form">
+            <input id="todo-input" type="text" placeholder="Nova meta de estudo..." maxlength="120" required />
+            <button type="submit" class="btn btn-sm">+</button>
+          </form>
+
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span>Progresso</span>
+              <span id="todo-progress-text">0/0 concluídas</span>
+            </div>
+            <div class="progress-track">
+              <div id="todo-progress-bar" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <ul id="todo-list" class="todo-list"></ul>
+        </section>
+
+        <!-- FLASHCARDS -->
+        <section class="card" aria-label="Flashcards de revisão">
+          <div class="card-header">
+            <h2>🃏 Flashcards</h2>
+            <button id="fc-toggle-form" type="button" class="btn btn-sm">+ Novo</button>
+          </div>
+
+          <div class="flashcard-scene">
+            <div id="flashcard-3d" class="flashcard-3d" title="Clique para virar o cartão">
+              <div class="fc-face fc-front">
+                <div class="fc-top">
+                  <span id="fc-tag" class="fc-tag">Computação</span>
+                  <span id="fc-counter">1 / 4</span>
+                </div>
+                <p id="fc-front-text" class="fc-text"></p>
+                <span class="fc-hint">Clique no cartão para ver a resposta ↻</span>
+              </div>
+              <div class="fc-face fc-back">
+                <div class="fc-top">
+                  <span>Resposta</span>
+                  <span>✓</span>
+                </div>
+                <p id="fc-back-text" class="fc-text"></p>
+                <span class="fc-hint">Clique para voltar à pergunta ↻</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="fc-controls">
+            <div>
+              <button id="fc-prev" type="button" class="btn btn-secondary btn-sm">←</button>
+              <button id="fc-next" type="button" class="btn btn-secondary btn-sm">→</button>
+            </div>
+            <div>
+              <button id="fc-shuffle" type="button" class="btn btn-ghost btn-sm" title="Embaralhar">🔀</button>
+              <button id="fc-delete" type="button" class="btn btn-ghost btn-sm" title="Excluir cartão atual">🗑️</button>
+            </div>
+          </div>
+
+          <form id="fc-add-form" class="fc-add-form hidden">
+            <input id="fc-input-tag" type="text" placeholder="Matéria / Tag (ex.: Redes, Cálculo)" maxlength="30" />
+            <input id="fc-input-front" type="text" placeholder="Pergunta (frente do cartão)" maxlength="180" required />
+            <textarea id="fc-input-back" rows="2" placeholder="Resposta (verso do cartão)" maxlength="320" required></textarea>
+            <button type="submit" class="btn btn-sm">Salvar Flashcard</button>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: MURAL DE DÚVIDAS -->
+    <section class="card forum-card" aria-label="Mural de Dúvidas">
+      <div class="card-header">
+        <h2>💬 Mural de Dúvidas</h2>
+      </div>
+
+      <div id="room-tabs" class="room-tabs" role="tablist"></div>
+      <p id="room-description" class="room-description"></p>
+
+      <form id="doubt-form" class="doubt-form">
+        <input id="doubt-title" type="text" placeholder="Título da sua dúvida (ex.: Erro em ponteiros em C)" maxlength="120" required />
+        <textarea id="doubt-content" placeholder="Explique sua dúvida com detalhes para seus colegas poderem ajudar..." maxlength="1000" required></textarea>
+        <button type="submit" class="btn">Publicar Dúvida</button>
+      </form>
+
+      <div id="doubts-feed" class="doubts-feed"></div>
+    </section>
+  </main>
+
+  <!-- MODAL DE APELIDO -->
+  <div id="nickname-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="nick-modal-title">
+    <div class="modal-box">
+      <h3 id="nick-modal-title">Como você quer ser chamado(a)?</h3>
+      <p>Não precisa criar conta nem senha. Seu apelido aparece apenas nas dúvidas e respostas que você enviar.</p>
+      <form id="nickname-form">
+        <input id="nickname-input" type="text" placeholder="Ex.: Bruno (3º Ano)" maxlength="28" required />
+        <div class="modal-actions">
+          <button id="close-nickname-modal" type="button" class="btn btn-ghost btn-sm">Cancelar</button>
+          <button type="submit" class="btn btn-sm">Salvar apelido</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÃO TOAST -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Firebase Compat SDK (só é ativado quando você preencher js/config.js) -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+  <!-- Scripts da Aplicação -->
+  <script src="js/config.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
