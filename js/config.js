@@ -21,6 +21,12 @@ window.APP_CONFIG = {
       description: "Espaço aberto para avisos, dicas de estudo e dúvidas gerais de Computação."
     },
     {
+      id: "primeiro-ano",
+      name: "1º Ano",
+      icon: "i-sprout",
+      description: "Mural dedicado às disciplinas e dúvidas do 1º ano de Ciência da Computação."
+  },
+    {
       id: "segundo-ano",
       name: "2º Ano",
       icon: "💻",
@@ -31,6 +37,12 @@ window.APP_CONFIG = {
       name: "3º Ano",
       icon: "🚀",
       description: "Mural dedicado às disciplinas, projetos e dúvidas do 3º ano de Ciência da Computação."
+    },
+    {
+      id: "quarto-ano",
+      name: "4º Ano",
+      icon: "i-cap",
+      description: "Mural dedicado ao TCC, estágios e às disciplinas do 4º ano de Ciência da Computação."
     }
     // Exemplo de como adicionar uma matéria específica depois:
     // {

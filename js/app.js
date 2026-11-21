@@ -68,6 +68,10 @@
     return new Date(ms).toLocaleDateString("pt-BR");
   }
 
+  function icon(id) {
+    return `<svg class="ico" aria-hidden="true"><use href="#${id}"/></svg>`;
+  }
+
   function showToast(msg) {
     const toast = $("#toast");
     toast.textContent = msg;
@@ -88,7 +92,8 @@
       btn.type = "button";
       btn.className = "theme-pill";
       btn.dataset.themeId = t.id;
-      btn.innerHTML = `<span class="theme-emoji">${t.emoji}</span><span class="theme-name">${t.label}</span>`;
+      btn.setAttribute("aria-label", `Tema ${t.label}`);
+      btn.innerHTML = `<span class="theme-swatch" aria-hidden="true"><i></i><i></i><i></i></span><span class="theme-name">${t.label}</span>`;
       btn.addEventListener("click", () => applyTheme(t.id));
       switcher.appendChild(btn);
     });
@@ -107,8 +112,13 @@
     $("#theme-quote").textContent = theme.quote;
 
     $$(".theme-pill").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.themeId === theme.id);
+      const active = btn.dataset.themeId === theme.id;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", String(active));
     });
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta && theme.color) meta.setAttribute("content", theme.color);
   }
 
   // ------------------------------------------------------------
@@ -116,9 +126,16 @@
   // ------------------------------------------------------------
   let currentNickname = localStorage.getItem(STORAGE_KEYS.nickname) || "";
 
+  function updateGreeting() {
+    const h = new Date().getHours();
+    const part = h < 5 ? "Boa madrugada" : h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
+    $("#greeting").textContent = currentNickname ? `${part}, ${currentNickname}` : part;
+  }
+
   function updateNicknameUI() {
     const label = $("#nickname-display");
     label.textContent = currentNickname ? currentNickname : "Definir apelido";
+    updateGreeting();
   }
 
   function openNicknameModal(onSaveCallback) {
@@ -213,10 +230,11 @@
     function setPomoMode(mode) {
       stopPomodoro();
       pomoMode = mode;
+      $("#panel-pomodoro").dataset.mode = mode;
       $$(".pomo-mode-btn").forEach((b) => b.classList.toggle("active", b.dataset.pomoMode === mode));
       pomoTotalSec = pomoDurations[mode] * 60;
       pomoRemainingSec = pomoTotalSec;
-      const labels = { focus: "Tempo de Foco", short: "Pausa Curta", long: "Pausa Longa" };
+      const labels = { focus: "Tempo de foco", short: "Pausa curta", long: "Pausa longa" };
       $("#pomo-status-label").textContent = labels[mode];
       renderPomodoro();
     }
@@ -348,10 +366,10 @@
   // ------------------------------------------------------------
   function initSounds() {
     const sounds = [
-      { id: "rain", name: "Chuva Suave", icon: "🌧️" },
-      { id: "fireplace", name: "Lareira", icon: "🔥" },
-      { id: "brown", name: "Ruído Marrom", icon: "🌊" },
-      { id: "lofi", name: "Pad Lo-Fi", icon: "🎧" }
+      { id: "rain", name: "Chuva suave", icon: "i-rain" },
+      { id: "fireplace", name: "Lareira", icon: "i-flame" },
+      { id: "brown", name: "Ruído marrom", icon: "i-waves" },
+      { id: "lofi", name: "Pad lo-fi", icon: "i-music" }
     ];
 
     const container = $("#sound-grid");
@@ -361,15 +379,14 @@
       item.dataset.soundId = s.id;
       item.innerHTML = `
         <button type="button" class="sound-toggle" aria-pressed="false">
-          <span class="sound-icon">${s.icon}</span>
+          <span class="sound-icon">${icon(s.icon)}</span>
           <span class="sound-name">${s.name}</span>
-          <span class="sound-state">Off</span>
+          <span class="sound-state" aria-hidden="true"></span>
         </button>
         <input type="range" class="sound-slider" min="5" max="100" value="55" aria-label="Volume de ${s.name}">
       `;
 
       const toggleBtn = item.querySelector(".sound-toggle");
-      const stateBadge = item.querySelector(".sound-state");
       const slider = item.querySelector(".sound-slider");
 
       toggleBtn.addEventListener("click", () => {
@@ -377,10 +394,12 @@
         const playing = window.soundEngine.toggle(s.id, vol);
         item.classList.toggle("playing", playing);
         toggleBtn.setAttribute("aria-pressed", String(playing));
-        stateBadge.textContent = playing ? "Tocando" : "Off";
       });
 
+      const paintSlider = () => slider.style.setProperty("--val", `${((slider.value - slider.min) / (slider.max - slider.min)) * 100}%`);
+      paintSlider();
       slider.addEventListener("input", () => {
+        paintSlider();
         const vol = parseInt(slider.value, 10) / 100;
         window.soundEngine.setVolume(s.id, vol);
       });
@@ -393,7 +412,6 @@
       $$(".sound-card").forEach((el) => {
         el.classList.remove("playing");
         el.querySelector(".sound-toggle").setAttribute("aria-pressed", "false");
-        el.querySelector(".sound-state").textContent = "Off";
       });
     });
   }
@@ -428,7 +446,7 @@
               <input type="checkbox" ${t.done ? "checked" : ""}>
               <span>${escapeHTML(t.text)}</span>
             </label>
-            <button type="button" class="icon-btn delete-todo" title="Remover tarefa" aria-label="Remover tarefa">✕</button>
+            <button type="button" class="icon-btn delete-todo" title="Remover tarefa" aria-label="Remover tarefa">${icon("i-x")}</button>
           </li>
         `
         )
@@ -681,7 +699,7 @@
         .map(
           (r) => `
           <button type="button" class="room-tab ${r.id === activeRoomId ? "active" : ""}" data-room="${r.id}">
-            <span>${r.icon}</span> ${escapeHTML(r.name)}
+            ${/^i-/.test(r.icon || "") ? icon(r.icon) : `<span>${escapeHTML(r.icon || "")}</span>`} ${escapeHTML(r.name)}
           </button>
         `
         )
@@ -768,17 +786,20 @@
           return `
             <article class="doubt-card" data-id="${escapeHTML(d.id)}">
               <div class="doubt-header">
-                <span class="doubt-author">${escapeHTML(d.author)}</span>
-                <span class="doubt-time">${formatTimeAgo(d.createdAtMs || d.createdAt)}</span>
+                <span class="avatar" aria-hidden="true">${escapeHTML((d.author || "?").trim().charAt(0).toUpperCase())}</span>
+                <div class="doubt-meta">
+                  <span class="doubt-author">${escapeHTML(d.author)}</span>
+                  <span class="doubt-time">${formatTimeAgo(d.createdAtMs || d.createdAt)}</span>
+                </div>
               </div>
               <h4 class="doubt-title">${escapeHTML(d.title)}</h4>
               <p class="doubt-body">${escapeHTML(d.content)}</p>
 
               <div class="replies-section">
-                <div class="replies-count">💬 ${replies.length} ${replies.length === 1 ? "resposta" : "respostas"}</div>
+                <div class="replies-count">${icon("i-chat")} ${replies.length} ${replies.length === 1 ? "resposta" : "respostas"}</div>
                 <div class="replies-list">${repliesHtml}</div>
                 <form class="reply-form" data-doubt-id="${escapeHTML(d.id)}">
-                  <input type="text" class="reply-input" placeholder="Escreva uma resposta para ajudar..." maxlength="500" required>
+                  <input type="text" class="reply-input" placeholder="Escreva uma resposta para ajudar..." aria-label="Responder" maxlength="500" required>
                   <button type="submit" class="btn btn-sm">Responder</button>
                 </form>
               </div>

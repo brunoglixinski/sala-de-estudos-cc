@@ -1,70 +1,42 @@
-# Sala de Estudos — Ciência da Computação (Projeto de Extensão PES II)
-
-Aplicação web estática, 100% gratuita para hospedar e manter, criada como sala de estudos virtual para alunos de Ciência da Computação.
-
-## Funcionalidades incluídas
-- **5 Temas completos** (paleta, fontes, logo SVG e frases): Claro, Escuro, Harry Potter (Sala Precisa), Hora de Aventura (Casa na Árvore) e Marvel (Torre de Estudos).
-- **Pomodoro personalizável** com alerta sonoro e contador diário + **Cronômetro Livre** com registro de blocos.
-- **Sons Ambientes procedurais** (Chuva, Lareira, Ruído Marrom e Pad Lo-Fi) gerados via Web Audio API (misture quantos quiser, zero links quebrados).
-- **Lista de Tarefas** com barra de progresso salva no navegador.
-- **Flashcards 3D interativos** com criação, exclusão e embaralhamento.
-- **Mural de Dúvidas sem login** (apenas apelido), dividido em **Sala Geral**, **2º Ano** e **3º Ano**. Funciona offline em Modo Local e sincroniza em tempo real entre todos os alunos ao conectar o Firebase gratuito.
-
----
-
-## Passo 1: Testar agora no seu computador
-Basta extrair o ZIP e abrir o arquivo `index.html` diretamente no navegador (ou usar a extensão *Live Server* no VS Code).
-
----
-
-## Passo 2: Ativar o Mural de Dúvidas Compartilhado (Firebase Gratuito)
-Sem cartão de crédito (Plano Spark gratuito):
-
-1. Acesse [console.firebase.google.com](https://console.firebase.google.com) e clique em **Criar um projeto**.
-2. Dê um nome (ex.: `sala-estudos-cc`), desative o Google Analytics (opcional) e conclua.
-3. No menu esquerdo, vá em **Criação > Firestore Database** e clique em **Criar banco de dados**.
-4. Escolha a localização mais próxima (ex.: `southamerica-east1` - São Paulo) e selecione **Iniciar no modo de teste** (permite leitura e escrita imediata).
-   > **Importante:** Nas regras do Firestore (`Regras`), lembre-se de ajustar a data de expiração ou usar:
-   > ```
-   > rules_version = '2';
-   > service cloud.firestore {
-   >   match /databases/{database}/documents {
-   >     match /doubts/{docId} {
-   >       allow read, create, update: if true;
-   >     }
-   >   }
-   > }
-   > ```
-5. No ícone de engrenagem (Configurações do projeto), role até **Seus apps**, clique no ícone **Web (`</>`)**, registre o app e copie o objeto `firebaseConfig`.
-6. Abra o arquivo `js/config.js` e cole os valores dentro de `firebase: { ... }`.
-
-Assim que salvar, o selo no topo do site muda automaticamente de **Modo Local** para **Online (Sincronizado)**!
-
----
-
-## Passo 3: Hospedar de Graça para Seus Colegas Acessarem
-
-### Opção A — GitHub Pages (mais simples para PES II)
-1. Crie um repositório público no GitHub (ex.: `sala-de-estudos-cc`).
-2. Envie todos os arquivos desta pasta (`index.html`, `styles.css`, pasta `js/`).
-3. No repositório, vá em **Settings > Pages**.
-4. Em **Source**, selecione `Deploy from a branch`, escolha `main` e pasta `/ (root)` e clique em **Save**.
-5. Em 1 minuto, seu site estará no ar em `https://seu-usuario.github.io/sala-de-estudos-cc/`.
-
-### Opção B — Vercel (link curto e deploy automático)
-1. Suba a pasta para um repositório no GitHub.
-2. Acesse [vercel.com](https://vercel.com) com sua conta do GitHub, clique em **Add New > Project**, selecione o repositório e clique em **Deploy**.
-3. O link público (`https://sala-de-estudos-cc.vercel.app`) sai na hora.
-
----
-
-## Como adicionar novas matérias no futuro
-Abra `js/config.js` e adicione novos itens dentro do array `rooms`. Exemplo:
-```js
-{
-  id: "redes",
-  name: "Redes de Computadores",
-  icon: "🌐",
-  description: "Camadas OSI, TCP/IP, roteamento e protocolos."
-}
-```
+# Sala de Estudos: Ciência da Computação
+ 
+Uma sala de estudos virtual feita para os alunos de Ciência da Computação, do 1º ao 4º ano. Você abre o site, escolhe o clima que mais ajuda na sua concentração e estuda com tudo o que precisa em um só lugar: cronômetro, sons de fundo, lista de tarefas, flashcards e um mural para tirar dúvidas com os colegas.
+ 
+Projeto desenvolvido para a disciplina de Projeto de Extensão (PES II).
+ 
+## O que você encontra na sala
+ 
+**Foco e tempo**
+- Pomodoro com tempos de foco, pausa curta e pausa longa que você pode ajustar, aviso sonoro ao fim de cada ciclo e contador de pomodoros concluídos no dia.
+- Cronômetro livre, com registro de blocos de estudo.
+**Sons ambientes**
+- Chuva suave, lareira, ruído marrom e pad lo-fi, com controle de volume individual. Dá para misturar quantos quiser.
+**Tarefas**
+- Lista de metas de estudo com barra de progresso.
+**Flashcards**
+- Cartões 3D que viram ao clique. Crie os seus, embaralhe e exclua quando quiser.
+**Mural de dúvidas**
+- Poste dúvidas e responda os colegas, sem criar conta e sem senha. Basta escolher um apelido.
+- Salas separadas: Sala Geral, 1º Ano, 2º Ano, 3º Ano e 4º Ano.
+## Temas
+ 
+Escolha o tema no topo da página. Cada um muda cores, fontes, decoração e até o jeito dos botões:
+ 
+- **Claro**: papel milimetrado e tinta azul, para estudar de dia.
+- **Escuro**: visual de editor de código, para estudar à noite.
+- **Harry Potter** (Sala Precisa): velas flutuando e cards de pergaminho.
+- **Hora de Aventura** (Casa na Árvore): cores vivas e contornos grossos de desenho animado.
+- **Marvel** (Torre de Estudos): painéis de HQ.
+O tema escolhido fica salvo para a sua próxima visita.
+ 
+## Como usar
+ 
+1. Acesse o site no navegador, no computador ou no celular.
+2. Escolha um tema e defina seu apelido.
+3. Inicie um pomodoro, ligue um som de fundo e bons estudos.
+Suas tarefas, flashcards e preferências ficam salvos no seu navegador. As dúvidas do mural são compartilhadas entre todos os alunos.
+ 
+## Tecnologias
+ 
+HTML, CSS e JavaScript puros, sem frameworks. Os sons são gerados no próprio navegador com a Web Audio API, e o mural usa o Firebase Firestore para sincronizar as dúvidas em tempo real.
+ 
