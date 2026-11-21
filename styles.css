@@ -155,24 +155,24 @@ button, input, textarea { font-family: inherit; color: inherit; }
 .theme-pill:hover { background: rgba(128, 128, 160, 0.16); }
 .theme-pill.active { background: var(--hdr-active-bg); color: var(--hdr-active-ink); }
 
-/* Mini paleta de cada tema dentro do botão */
-.theme-swatch { display: inline-flex; width: 26px; height: 18px; border-radius: 9px; overflow: hidden; box-shadow: 0 0 0 1.5px rgba(128, 128, 140, 0.45); flex: none; }
-.theme-swatch i { flex: 1; }
-.theme-pill[data-theme-id="light"] .theme-swatch i:nth-child(1) { background: #ffffff; }
-.theme-pill[data-theme-id="light"] .theme-swatch i:nth-child(2) { background: #2747f0; }
-.theme-pill[data-theme-id="light"] .theme-swatch i:nth-child(3) { background: #ffd447; }
-.theme-pill[data-theme-id="dark"] .theme-swatch i:nth-child(1) { background: #0e1224; }
-.theme-pill[data-theme-id="dark"] .theme-swatch i:nth-child(2) { background: #a99bff; }
-.theme-pill[data-theme-id="dark"] .theme-swatch i:nth-child(3) { background: #67e8f9; }
-.theme-pill[data-theme-id="harry-potter"] .theme-swatch i:nth-child(1) { background: #7a1522; }
-.theme-pill[data-theme-id="harry-potter"] .theme-swatch i:nth-child(2) { background: #d9a93c; }
-.theme-pill[data-theme-id="harry-potter"] .theme-swatch i:nth-child(3) { background: #efdfba; }
-.theme-pill[data-theme-id="adventure-time"] .theme-swatch i:nth-child(1) { background: #4fc3f7; }
-.theme-pill[data-theme-id="adventure-time"] .theme-swatch i:nth-child(2) { background: #ffd53d; }
-.theme-pill[data-theme-id="adventure-time"] .theme-swatch i:nth-child(3) { background: #ff8fc7; }
-.theme-pill[data-theme-id="marvel"] .theme-swatch i:nth-child(1) { background: #d9171e; }
-.theme-pill[data-theme-id="marvel"] .theme-swatch i:nth-child(2) { background: #ffd21f; }
-.theme-pill[data-theme-id="marvel"] .theme-swatch i:nth-child(3) { background: #1d4ed8; }
+/* Ícone de cada tema dentro do botão */
+.theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.theme-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Garante contraste do brasão dourado sobre o botão ativo do Harry Potter */
+.theme-pill.active[data-theme-id="harry-potter"] .theme-icon {
+  filter: drop-shadow(0 1px 1.5px rgba(24, 12, 8, 0.75));
+}
 
 .nickname-btn {
   display: inline-flex; align-items: center; gap: 0.45rem;
@@ -745,7 +745,7 @@ input[type="range"]::-moz-range-thumb {
 [data-theme="harry-potter"] .theme-pill { font-family: "Cinzel", serif; font-size: 0.78rem; }
 [data-theme="harry-potter"] .nickname-btn { font-family: "Cinzel", serif; font-size: 0.78rem; }
 
-[data-theme="harry-potter"] .banner { margin-top: 6.2rem; flex-direction: column; align-items: center; text-align: center; }
+[data-theme="harry-potter"] .banner { margin-top: 6.2rem; }
 [data-theme="harry-potter"] .banner-greeting {
   font-family: "Cinzel Decorative", "Cinzel", serif; font-weight: 900;
   color: #f6d77e; text-shadow: 0 0 24px rgba(242, 199, 92, 0.45), 0 2px 0 #43090f;

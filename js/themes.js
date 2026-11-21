@@ -7,6 +7,7 @@
 window.APP_THEMES = {
   light: {
     id: "light",
+    color: "#2747f0",
     label: "Claro",
     emoji: "☀️",
     title: "Sala de Estudos",
@@ -24,6 +25,7 @@ window.APP_THEMES = {
 
   dark: {
     id: "dark",
+    color: "#0b0e1c",
     label: "Escuro",
     emoji: "🌙",
     title: "Sala de Estudos",
@@ -41,6 +43,7 @@ window.APP_THEMES = {
 
   "harry-potter": {
     id: "harry-potter",
+    color: "#1b0d11",
     label: "Harry Potter",
     emoji: "⚡",
     title: "Sala Precisa",
@@ -58,6 +61,7 @@ window.APP_THEMES = {
 
   "adventure-time": {
     id: "adventure-time",
+    color: "#ffd53d",
     label: "Hora de Aventura",
     emoji: "⚔️",
     title: "Casa na Árvore",
@@ -79,6 +83,7 @@ window.APP_THEMES = {
 
   marvel: {
     id: "marvel",
+    color: "#090f1f",
     label: "Marvel",
     emoji: "🛡️",
     title: "TORRE DE ESTUDOS",

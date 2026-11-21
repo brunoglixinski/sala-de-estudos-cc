@@ -93,7 +93,7 @@
       btn.className = "theme-pill";
       btn.dataset.themeId = t.id;
       btn.setAttribute("aria-label", `Tema ${t.label}`);
-      btn.innerHTML = `<span class="theme-swatch" aria-hidden="true"><i></i><i></i><i></i></span><span class="theme-name">${t.label}</span>`;
+      btn.innerHTML = `<span class="theme-icon" aria-hidden="true">${t.logoSvg}</span><span class="theme-name">${t.label}</span>`;
       btn.addEventListener("click", () => applyTheme(t.id));
       switcher.appendChild(btn);
     });

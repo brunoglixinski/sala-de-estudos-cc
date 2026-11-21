@@ -17,7 +17,7 @@ window.APP_CONFIG = {
     {
       id: "geral",
       name: "Sala Geral",
-      icon: "🏛️",
+      icon: "i-building",
       description: "Espaço aberto para avisos, dicas de estudo e dúvidas gerais de Computação."
     },
     {
@@ -29,13 +29,13 @@ window.APP_CONFIG = {
     {
       id: "segundo-ano",
       name: "2º Ano",
-      icon: "💻",
+      icon: "i-laptop",
       description: "Mural dedicado às disciplinas e trabalhos do 2º ano de Ciência da Computação."
     },
     {
       id: "terceiro-ano",
       name: "3º Ano",
-      icon: "🚀",
+      icon: "i-rocket",
       description: "Mural dedicado às disciplinas, projetos e dúvidas do 3º ano de Ciência da Computação."
     },
     {
